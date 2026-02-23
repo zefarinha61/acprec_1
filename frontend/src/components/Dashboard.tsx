@@ -213,9 +213,9 @@ export default function Dashboard() {
                     <div className="p-4 border-b border-gray-100 bg-gray-50/50">
                         <h2 className="text-lg font-semibold text-gray-800">Registos Detalhados</h2>
                     </div>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-[600px]">
                         <table className="w-full text-left text-sm whitespace-nowrap">
-                            <thead className="bg-gray-50 text-gray-600 font-medium">
+                            <thead className="bg-gray-50 text-gray-600 font-medium sticky top-0 z-10 shadow-sm">
                                 <tr>
                                     <th className="px-6 py-4">Sócio</th>
                                     <th className="px-6 py-4">SubFamília</th>
