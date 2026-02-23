@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { RececaoUva } from '../types';
-import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle } from 'lucide-react';
+import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle, LayoutDashboard, ListFilter } from 'lucide-react';
+import Analytics from './Analytics';
 
 export default function Dashboard() {
     const [data, setData] = useState<RececaoUva[]>([]);
@@ -14,6 +15,9 @@ export default function Dashboard() {
     const [selectedCasta, setSelectedCasta] = useState('');
     const [selectedProcesso, setSelectedProcesso] = useState('');
     const [selectedSubFamilia, setSelectedSubFamilia] = useState('');
+
+    // Tabs
+    const [activeTab, setActiveTab] = useState<'table' | 'analytics'>('table');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -208,62 +212,90 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Tabela de Dados */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                        <h2 className="text-lg font-semibold text-gray-800">Registos Detalhados</h2>
-                    </div>
-                    <div className="overflow-x-auto max-h-[600px]">
-                        <table className="w-full text-left text-sm whitespace-nowrap">
-                            <thead className="bg-gray-50 text-gray-600 font-medium sticky top-0 z-10 shadow-sm">
-                                <tr>
-                                    <th className="px-6 py-4">Sócio</th>
-                                    <th className="px-6 py-4">Tipo</th>
-                                    <th className="px-6 py-4">Campanha</th>
-                                    <th className="px-6 py-4">Casta</th>
-                                    <th className="px-6 py-4">Processo</th>
-                                    <th className="px-6 py-4 text-right">Peso (Kg)</th>
-                                    <th className="px-6 py-4 text-right">Grau</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 text-gray-700">
-                                {filteredData.slice(0, 100).map((row, idx) => (
-                                    <tr key={idx} className="hover:bg-wine-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium text-gray-900">{row.CodSocio}</div>
-                                            <div className="text-xs text-gray-500 truncate max-w-[200px]">{row.nome}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {row.DescricaoSubFamilia || '-'}
-                                        </td>
-                                        <td className="px-6 py-4"><span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">{row.Campanha}</span></td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium text-wine-800">{row.DescricaoCasta}</div>
-                                        </td>
-                                        <td className="px-6 py-4">{row.DescricaoProcesso}</td>
-                                        <td className="px-6 py-4 text-right font-medium">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
-                                        <td className="px-6 py-4 text-right">
-                                            <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${(row.Grau || 0) > 13 ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
-                                                }`}>
-                                                {row.Grau?.toFixed(1) || '0.0'}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredData.length > 100 && (
-                            <div className="p-4 text-center text-sm text-gray-500 border-t border-gray-100 bg-gray-50/50">
-                                Mostrando os primeiros 100 registos de {filteredData.length}. Use a pesquisa para refinar.
-                            </div>
-                        )}
-                        {filteredData.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                Nenhum registo encontrado.
-                            </div>
-                        )}
-                    </div>
+                {/* Tabs Navigation */}
+                <div className="flex border-b border-gray-200 mt-4 mb-2">
+                    <button
+                        onClick={() => setActiveTab('table')}
+                        className={`flex items-center space-x-2 py-3 px-6 font-medium text-sm transition-colors border-b-2 ${activeTab === 'table'
+                                ? 'border-wine-600 text-wine-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`}
+                    >
+                        <ListFilter className="w-4 h-4" />
+                        <span>Tabela Detalhada</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('analytics')}
+                        className={`flex items-center space-x-2 py-3 px-6 font-medium text-sm transition-colors border-b-2 ${activeTab === 'analytics'
+                                ? 'border-wine-600 text-wine-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`}
+                    >
+                        <LayoutDashboard className="w-4 h-4" />
+                        <span>Análise Gráfica</span>
+                    </button>
                 </div>
+
+                {/* Content Area Rendering */}
+                {activeTab === 'analytics' ? (
+                    <Analytics data={filteredData} />
+                ) : (
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
+                        <div className="p-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-lg font-semibold text-gray-800">Registos Detalhados</h2>
+                        </div>
+                        <div className="overflow-x-auto max-h-[600px]">
+                            <table className="w-full text-left text-sm whitespace-nowrap">
+                                <thead className="bg-gray-50 text-gray-600 font-medium sticky top-0 z-10 shadow-sm">
+                                    <tr>
+                                        <th className="px-6 py-4">Sócio</th>
+                                        <th className="px-6 py-4">Tipo</th>
+                                        <th className="px-6 py-4">Campanha</th>
+                                        <th className="px-6 py-4">Casta</th>
+                                        <th className="px-6 py-4">Processo</th>
+                                        <th className="px-6 py-4 text-right">Peso (Kg)</th>
+                                        <th className="px-6 py-4 text-right">Grau</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-100 text-gray-700">
+                                    {filteredData.slice(0, 100).map((row, idx) => (
+                                        <tr key={idx} className="hover:bg-wine-50/50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="font-medium text-gray-900">{row.CodSocio}</div>
+                                                <div className="text-xs text-gray-500 truncate max-w-[200px]">{row.nome}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {row.DescricaoSubFamilia || '-'}
+                                            </td>
+                                            <td className="px-6 py-4"><span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">{row.Campanha}</span></td>
+                                            <td className="px-6 py-4">
+                                                <div className="font-medium text-wine-800">{row.DescricaoCasta}</div>
+                                            </td>
+                                            <td className="px-6 py-4">{row.DescricaoProcesso}</td>
+                                            <td className="px-6 py-4 text-right font-medium">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${(row.Grau || 0) > 13 ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+                                                    }`}>
+                                                    {row.Grau?.toFixed(1) || '0.0'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {filteredData.length > 100 && (
+                                <div className="p-4 text-center text-sm text-gray-500 border-t border-gray-100 bg-gray-50/50">
+                                    Mostrando os primeiros 100 registos de {filteredData.length}. Use a pesquisa para refinar.
+                                </div>
+                            )}
+                            {filteredData.length === 0 && (
+                                <div className="p-8 text-center text-gray-500">
+                                    Nenhum registo encontrado.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
             </div>
         </div>
