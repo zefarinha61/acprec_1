@@ -206,7 +206,7 @@ export default function Dashboard() {
                             <thead className="bg-gray-50 text-gray-600 font-medium">
                                 <tr>
                                     <th className="px-6 py-4">Sócio</th>
-                                    <th className="px-6 py-4">Data</th>
+                                    <th className="px-6 py-4">SubFamília</th>
                                     <th className="px-6 py-4">Campanha</th>
                                     <th className="px-6 py-4">Casta</th>
                                     <th className="px-6 py-4">Processo</th>
@@ -222,12 +222,11 @@ export default function Dashboard() {
                                             <div className="text-xs text-gray-500 truncate max-w-[200px]">{row.nome}</div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            {row.DataMovimento ? format(new Date(row.DataMovimento), "dd MMM yyyy HH:mm", { locale: pt }) : '-'}
+                                            {row.DescricaoSubFamilia || '-'}
                                         </td>
                                         <td className="px-6 py-4"><span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">{row.Campanha}</span></td>
                                         <td className="px-6 py-4">
                                             <div className="font-medium text-wine-800">{row.DescricaoCasta}</div>
-                                            <div className="text-xs text-gray-500">{row.DescricaoSubFamilia}</div>
                                         </td>
                                         <td className="px-6 py-4">{row.DescricaoProcesso}</td>
                                         <td className="px-6 py-4 text-right font-medium">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
