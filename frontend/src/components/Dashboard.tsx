@@ -9,7 +9,12 @@ export default function Dashboard() {
     const [data, setData] = useState<RececaoUva[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // Search & Filters
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCampanha, setSelectedCampanha] = useState('');
+    const [selectedCasta, setSelectedCasta] = useState('');
+    const [selectedProcesso, setSelectedProcesso] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,11 +34,21 @@ export default function Dashboard() {
         fetchData();
     }, []);
 
-    const filteredData = data.filter(item =>
-        item.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.CodSocio?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.DescricaoCasta?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Extract unique options for filters
+    const campanhas = Array.from(new Set(data.map(item => item.Campanha))).filter(Boolean).sort();
+    const castas = Array.from(new Set(data.map(item => item.DescricaoCasta))).filter(Boolean).sort();
+    const processos = Array.from(new Set(data.map(item => item.DescricaoProcesso))).filter(Boolean).sort();
+
+    const filteredData = data.filter(item => {
+        const matchSearch = item.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.CodSocio?.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchCampanha = selectedCampanha === '' || item.Campanha === selectedCampanha;
+        const matchCasta = selectedCasta === '' || item.DescricaoCasta === selectedCasta;
+        const matchProcesso = selectedProcesso === '' || item.DescricaoProcesso === selectedProcesso;
+
+        return matchSearch && matchCampanha && matchCasta && matchProcesso;
+    });
 
     const totalPeso = filteredData.reduce((acc, curr) => acc + (curr.PesoLiquido || 0), 0);
     const avgGrau = filteredData.length > 0
@@ -74,31 +89,69 @@ export default function Dashboard() {
         <div className="min-h-screen bg-gray-50 text-gray-800 p-6">
             <div className="max-w-7xl mx-auto space-y-6">
 
-                {/* Header */}
-                <header className="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                        <div className="w-14 h-14 bg-wine-100 rounded-xl flex items-center justify-center text-wine-600">
-                            <Grape size={32} />
+                {/* Header & Filters */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col space-y-6">
+                    <header className="flex flex-col md:flex-row justify-between items-start md:items-center w-full">
+                        <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                            <div className="w-14 h-14 bg-wine-100 rounded-xl flex items-center justify-center text-wine-600">
+                                <Grape size={32} />
+                            </div>
+                            <div>
+                                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Receção de Uvas</h1>
+                                <p className="text-gray-500 text-sm">Painel de Controlo e Registos</p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Receção de Uvas</h1>
-                            <p className="text-gray-500 text-sm">Painel de Controlo e Registos</p>
-                        </div>
-                    </div>
 
-                    <div className="relative w-full md:w-96">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-gray-400" />
+                        <div className="relative w-full md:w-96">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Search className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Pesquisar sócio..."
+                                className="pl-10 pr-4 py-2 w-full bg-gray-50 border-gray-200 border rounded-xl focus:ring-2 focus:ring-wine-500 focus:border-wine-500 transition-all outline-none"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Pesquisar sócio ou casta..."
-                            className="pl-10 pr-4 py-3 w-full bg-gray-50 border-gray-200 border rounded-xl focus:ring-2 focus:ring-wine-500 focus:border-wine-500 transition-all outline-none"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                    </header>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-100">
+                        <div className="flex flex-col">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Campanha</label>
+                            <select
+                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                value={selectedCampanha}
+                                onChange={(e) => setSelectedCampanha(e.target.value)}
+                            >
+                                <option value="">Todas as Campanhas</option>
+                                {campanhas.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Casta</label>
+                            <select
+                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                value={selectedCasta}
+                                onChange={(e) => setSelectedCasta(e.target.value)}
+                            >
+                                <option value="">Todas as Castas</option>
+                                {castas.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Processo Vindima</label>
+                            <select
+                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                value={selectedProcesso}
+                                onChange={(e) => setSelectedProcesso(e.target.value)}
+                            >
+                                <option value="">Todos os Processos</option>
+                                {processos.map(p => <option key={p} value={p}>{p}</option>)}
+                            </select>
+                        </div>
                     </div>
-                </header>
+                </div>
 
                 {/* KPIs */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
