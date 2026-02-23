@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { RececaoUva } from '../types';
-import { format } from 'date-fns';
-import { pt } from 'date-fns/locale';
 import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle } from 'lucide-react';
 
 export default function Dashboard() {
