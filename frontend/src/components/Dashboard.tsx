@@ -166,7 +166,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* KPIs */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-white border-l-4 border-l-wine-500 flex items-center space-x-4">
                         <div className="p-3 bg-wine-50 rounded-lg text-wine-600">
                             <Calendar className="w-8 h-8" />
