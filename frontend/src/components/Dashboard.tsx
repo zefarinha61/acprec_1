@@ -13,6 +13,7 @@ export default function Dashboard() {
     const [selectedCampanha, setSelectedCampanha] = useState('');
     const [selectedCasta, setSelectedCasta] = useState('');
     const [selectedProcesso, setSelectedProcesso] = useState('');
+    const [selectedSubFamilia, setSelectedSubFamilia] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +37,7 @@ export default function Dashboard() {
     const campanhas = Array.from(new Set(data.map(item => item.Campanha))).filter(Boolean).sort();
     const castas = Array.from(new Set(data.map(item => item.DescricaoCasta))).filter(Boolean).sort();
     const processos = Array.from(new Set(data.map(item => item.DescricaoProcesso))).filter(Boolean).sort();
+    const subfamilias = Array.from(new Set(data.map(item => item.DescricaoSubFamilia))).filter(Boolean).sort();
 
     const filteredData = data.filter(item => {
         const matchSearch = item.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -44,8 +46,9 @@ export default function Dashboard() {
         const matchCampanha = selectedCampanha === '' || item.Campanha === selectedCampanha;
         const matchCasta = selectedCasta === '' || item.DescricaoCasta === selectedCasta;
         const matchProcesso = selectedProcesso === '' || item.DescricaoProcesso === selectedProcesso;
+        const matchSubFamilia = selectedSubFamilia === '' || item.DescricaoSubFamilia === selectedSubFamilia;
 
-        return matchSearch && matchCampanha && matchCasta && matchProcesso;
+        return matchSearch && matchCampanha && matchCasta && matchProcesso && matchSubFamilia;
     });
 
     const totalPeso = filteredData.reduce((acc, curr) => acc + (curr.PesoLiquido || 0), 0);
@@ -114,7 +117,7 @@ export default function Dashboard() {
                         </div>
                     </header>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-100">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
                         <div className="flex flex-col">
                             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Campanha</label>
                             <select
@@ -124,6 +127,17 @@ export default function Dashboard() {
                             >
                                 <option value="">Todas as Campanhas</option>
                                 {campanhas.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Sub-Família</label>
+                            <select
+                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                value={selectedSubFamilia}
+                                onChange={(e) => setSelectedSubFamilia(e.target.value)}
+                            >
+                                <option value="">Todas as Sub-Famílias</option>
+                                {subfamilias.map(sf => <option key={sf} value={sf}>{sf}</option>)}
                             </select>
                         </div>
                         <div className="flex flex-col">
