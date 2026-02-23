@@ -98,7 +98,7 @@ export default function Dashboard() {
                                 <Grape size={32} />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Receção de Uvas</h1>
+                                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Recepção de Uvas</h1>
                                 <p className="text-gray-500 text-sm">Painel de Controlo e Registos</p>
                             </div>
                         </div>
@@ -130,13 +130,13 @@ export default function Dashboard() {
                             </select>
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Sub-Família</label>
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo</label>
                             <select
                                 className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
                                 value={selectedSubFamilia}
                                 onChange={(e) => setSelectedSubFamilia(e.target.value)}
                             >
-                                <option value="">Todas as Sub-Famílias</option>
+                                <option value="">Todos os Tipos</option>
                                 {subfamilias.map(sf => <option key={sf} value={sf}>{sf}</option>)}
                             </select>
                         </div>
@@ -218,7 +218,7 @@ export default function Dashboard() {
                             <thead className="bg-gray-50 text-gray-600 font-medium sticky top-0 z-10 shadow-sm">
                                 <tr>
                                     <th className="px-6 py-4">Sócio</th>
-                                    <th className="px-6 py-4">SubFamília</th>
+                                    <th className="px-6 py-4">Tipo</th>
                                     <th className="px-6 py-4">Campanha</th>
                                     <th className="px-6 py-4">Casta</th>
                                     <th className="px-6 py-4">Processo</th>
