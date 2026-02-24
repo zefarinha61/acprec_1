@@ -99,9 +99,9 @@ export default function Analytics({ data }: AnalyticsProps) {
                 {/* Gráfico de Peso por Casta */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <h3 className="text-base font-semibold text-slate-800 mb-6">Top Castas (Peso Entregue)</h3>
-                    <div className="h-96">
+                    <div className="h-[450px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={castaData} margin={{ top: 5, right: 20, left: 20, bottom: 80 }}>
+                            <BarChart data={castaData} margin={{ top: 5, right: 20, left: 20, bottom: 120 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 12, fill: '#6B7280' }} />
                                 <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} tick={{ fontSize: 12, fill: '#6B7280' }} />
