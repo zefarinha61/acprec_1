@@ -70,6 +70,25 @@ export default function Analytics({ data }: AnalyticsProps) {
             .slice(0, 5); // Top 5 Socios
     }, [data]);
 
+    // 5. Data for Top Origens (Sócio -> Propriedade -> Parcela)
+    const topOrigensData = useMemo(() => {
+        const map = new Map<string, number>();
+        data.forEach(item => {
+            const socio = item.nome || item.CodSocio || 'Desconhecido';
+            const shortSocio = socio.length > 20 ? socio.substring(0, 20) + '...' : socio;
+            const prop = item.DescricaoPropriedade || 'S/ Propriedade';
+            const parc = item.DescricaoParcela || 'S/ Parcela';
+            const key = `${shortSocio} › ${prop} › ${parc}`;
+
+            map.set(key, (map.get(key) || 0) + (item.PesoLiquido || 0));
+        });
+
+        return Array.from(map.entries())
+            .map(([name, peso]) => ({ name, peso: Math.round(peso) }))
+            .sort((a, b) => b.peso - a.peso)
+            .slice(0, 15); // Top 15 origens
+    }, [data]);
+
     if (data.length === 0) {
         return (
             <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center text-slate-500 font-medium">
@@ -182,6 +201,26 @@ export default function Analytics({ data }: AnalyticsProps) {
                                 <Tooltip content={<CustomTooltip />} />
                                 <Legend verticalAlign="bottom" height={36} iconType="circle" />
                             </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* Top Origens (Full Width) */}
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-2">
+                    <h3 className="text-base font-semibold text-slate-800 mb-6">Top 15 Origens (Sócio › Propriedade › Parcela)</h3>
+                    <div className="h-[500px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={topOrigensData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#E5E7EB" />
+                                <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} tick={{ fontSize: 12, fill: '#6B7280' }} />
+                                <YAxis dataKey="name" type="category" width={320} tick={{ fontSize: 11, fill: '#374151', fontWeight: 500 }} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar dataKey="peso" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={16}>
+                                    {topOrigensData.map((_entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
