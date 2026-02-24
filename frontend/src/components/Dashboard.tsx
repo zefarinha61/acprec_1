@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { RececaoUva } from '../types';
-import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle, LayoutDashboard, ListFilter } from 'lucide-react';
+import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle, LayoutDashboard, ListFilter, Map } from 'lucide-react';
 import Analytics from './Analytics';
+import OrigensAnalytics from './OrigensAnalytics';
 
 export default function Dashboard() {
     const [data, setData] = useState<RececaoUva[]>([]);
@@ -17,7 +18,7 @@ export default function Dashboard() {
     const [selectedSubFamilia, setSelectedSubFamilia] = useState('');
 
     // Tabs
-    const [activeTab, setActiveTab] = useState<'table' | 'analytics'>('table');
+    const [activeTab, setActiveTab] = useState<'table' | 'analytics' | 'origens'>('table');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -213,10 +214,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Tabs Navigation */}
-                <div className="flex border-b border-slate-200 mt-6 mb-2">
+                <div className="flex overflow-x-auto space-x-2 border-b border-slate-200 mt-6 mb-2 scrollbar-none">
                     <button
                         onClick={() => setActiveTab('table')}
-                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 ${activeTab === 'table'
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'table'
                             ? 'border-wine-600 text-wine-700'
                             : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                             }`}
@@ -226,7 +227,7 @@ export default function Dashboard() {
                     </button>
                     <button
                         onClick={() => setActiveTab('analytics')}
-                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 ${activeTab === 'analytics'
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'analytics'
                             ? 'border-wine-600 text-wine-700'
                             : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                             }`}
@@ -234,11 +235,23 @@ export default function Dashboard() {
                         <LayoutDashboard className="w-4 h-4" strokeWidth={2.5} />
                         <span>Análise Gráfica</span>
                     </button>
+                    <button
+                        onClick={() => setActiveTab('origens')}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'origens'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
+                    >
+                        <Map className="w-4 h-4" strokeWidth={2.5} />
+                        <span>Origens</span>
+                    </button>
                 </div>
 
                 {/* Content Area Rendering */}
                 {activeTab === 'analytics' ? (
                     <Analytics data={filteredData} />
+                ) : activeTab === 'origens' ? (
+                    <OrigensAnalytics data={filteredData} />
                 ) : (
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-4">
                         <div className="p-5 border-b border-slate-200 bg-white flex justify-between items-center">
