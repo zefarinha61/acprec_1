@@ -20,17 +20,20 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
         return Array.from(new Set(data.map(item => item.nome || item.CodSocio || ''))).filter(Boolean).sort();
     }, [data]);
 
+    // Sócio Efetivo (se só houver 1 resultante dos filtros globais, auto-seleciona)
+    const effectiveSocio = selectedSocio || (socios.length === 1 ? socios[0] : '');
+
     // Extrair Propriedades (Dependentes do Sócio Selecionado)
     const propriedades = useMemo(() => {
-        if (!selectedSocio) return [];
+        if (!effectiveSocio) return [];
         return Array.from(
             new Set(
                 data
-                    .filter(item => (item.nome === selectedSocio || item.CodSocio === selectedSocio) && item.DescricaoPropriedade)
+                    .filter(item => (item.nome === effectiveSocio || item.CodSocio === effectiveSocio) && item.DescricaoPropriedade)
                     .map(item => item.DescricaoPropriedade)
             )
         ).sort();
-    }, [data, selectedSocio]);
+    }, [data, effectiveSocio]);
 
     // Reset da Propriedade se o Sócio mudar
     function handleSocioChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -39,10 +42,8 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
     }
 
     // Criar os Dados para os Gráficos
-    // Se um Sócio estiver selecionado, vamos agrupar os dados por Propriedade -> Parcela (para os gráficos circulares)
-    // Se não houver Sócio selecionado, mantemos o Top Mundial em formato barra
     const chartData = useMemo(() => {
-        if (!selectedSocio) {
+        if (!effectiveSocio) {
             return {
                 type: 'empty',
                 data: []
@@ -54,7 +55,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
         const propriedadesMap = new Map<string, Map<string, number>>();
 
         data.forEach(item => {
-            const matchSocio = item.nome === selectedSocio || item.CodSocio === selectedSocio;
+            const matchSocio = item.nome === effectiveSocio || item.CodSocio === effectiveSocio;
             const matchPropriedade = selectedPropriedade === '' || item.DescricaoPropriedade === selectedPropriedade;
 
             if (matchSocio && matchPropriedade) {
@@ -89,7 +90,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
             data: groupedData
         };
 
-    }, [data, selectedSocio, selectedPropriedade]);
+    }, [data, effectiveSocio, selectedPropriedade]);
 
     // Tooltip Customizado
     const CustomTooltip = ({ active, payload, label }: any) => {
@@ -114,10 +115,10 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                 <div>
                     <h2 className="text-lg font-semibold text-slate-900 tracking-tight">Análise por Propriedade e Parcela</h2>
                     <p className="text-xs font-medium text-slate-500">
-                        {selectedSocio && selectedPropriedade
-                            ? `Exibindo Parcelas da propriedade ${selectedPropriedade} do sócio ${selectedSocio}`
-                            : selectedSocio
-                                ? `Exibindo a distribuição de Parcelas por cada Propriedade do sócio ${selectedSocio}`
+                        {effectiveSocio && selectedPropriedade
+                            ? `Exibindo Parcelas da propriedade ${selectedPropriedade} do sócio ${effectiveSocio}`
+                            : effectiveSocio
+                                ? `Exibindo a distribuição de Parcelas por cada Propriedade do sócio ${effectiveSocio}`
                                 : 'A aguardar seleção de um Sócio...'}
                     </p>
                 </div>
@@ -125,18 +126,19 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                 <div className="flex space-x-3 w-full md:w-auto">
                     <select
                         className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full md:w-48 p-2 outline-none font-medium shadow-sm cursor-pointer"
-                        value={selectedSocio}
+                        value={effectiveSocio !== selectedSocio && socios.length === 1 ? effectiveSocio : selectedSocio}
                         onChange={handleSocioChange}
+                        disabled={socios.length <= 1}
                     >
-                        <option value="">Todos os Sócios</option>
-                        {socios.map((s: string) => <option key={s} value={s}>{s}</option>)}
+                        <option value="">{socios.length === 1 ? effectiveSocio : 'Todos os Sócios'}</option>
+                        {socios.length > 1 && socios.map((s: string) => <option key={s} value={s}>{s}</option>)}
                     </select>
 
                     <select
                         className="bg-white border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full md:w-48 p-2 outline-none font-medium shadow-sm cursor-pointer disabled:bg-slate-100 disabled:text-slate-400"
                         value={selectedPropriedade}
                         onChange={(e) => setSelectedPropriedade(e.target.value)}
-                        disabled={!selectedSocio || propriedades.length === 0}
+                        disabled={!effectiveSocio || propriedades.length === 0}
                     >
                         <option value="">Todas as Propriedades</option>
                         {propriedades.map((p: string) => <option key={p} value={p}>{p}</option>)}
@@ -146,7 +148,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
 
             {/* Gráficos */}
             <div className="p-6">
-                {!selectedSocio && (
+                {!effectiveSocio && (
                     <div className="h-64 flex flex-col items-center justify-center text-slate-500 font-medium bg-slate-50/50 rounded-lg border border-slate-100 p-6 text-center">
                         <span className="text-lg mb-2 block">Por favor, selecione um Sócio no filtro acima.</span>
                         <span className="text-sm font-normal text-slate-400">
@@ -190,7 +192,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                     </div>
                 )}
 
-                {selectedSocio && chartData.type === 'pieGroup' && chartData.data.length === 0 && (
+                {effectiveSocio && chartData.type === 'pieGroup' && chartData.data.length === 0 && (
                     <div className="h-64 flex items-center justify-center text-slate-500 font-medium bg-slate-50/50 rounded-lg border border-slate-100">
                         Nenhum dado encontrado para a seleção atual.
                     </div>
