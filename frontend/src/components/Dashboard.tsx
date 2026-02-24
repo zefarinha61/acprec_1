@@ -312,9 +312,7 @@ export default function Dashboard() {
                                             <td className="px-4 py-3 font-medium text-slate-600">{row.DescricaoParcela || '-'}</td>
                                             <td className="px-4 py-3 text-right font-semibold text-slate-900">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
                                             <td className="px-4 py-3 text-right">
-                                                <span className={`px - 2 py - 1 rounded - md text - [10px] font - bold border ${
-    (row.Grau || 0) > 13 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-blue-50 text-blue-700 border-blue-100'
-} `}>
+                                                <span className={`px - 2 py - 1 rounded - md text - [10px] font - bold border ${ (row.Grau || 0) > 13 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-blue-50 text-blue-700 border-blue-100' } `}>
                                                     {row.Grau?.toFixed(1) || '0.0'}
                                                 </span>
                                             </td>
