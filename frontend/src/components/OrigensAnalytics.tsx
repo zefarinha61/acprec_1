@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+    Tooltip, ResponsiveContainer, Cell,
     PieChart, Pie
 } from 'recharts';
 import type { RececaoUva } from '../types';
@@ -43,20 +43,9 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
     // Se não houver Sócio selecionado, mantemos o Top Mundial em formato barra
     const chartData = useMemo(() => {
         if (!selectedSocio) {
-            // Cenário Mundial (BarChart)
-            const map = new Map<string, number>();
-            data.forEach(item => {
-                const shortSocio = (item.nome || item.CodSocio || 'Desc').substring(0, 15);
-                const label = `${shortSocio} › ${item.DescricaoPropriedade || 'S/P'} › ${item.DescricaoParcela || 'S/P'}`;
-                map.set(label, (map.get(label) || 0) + (item.PesoLiquido || 0));
-            });
-
             return {
-                type: 'bar',
-                data: Array.from(map.entries())
-                    .map(([name, peso]) => ({ name, peso: Math.round(peso) }))
-                    .sort((a, b) => b.peso - a.peso)
-                    .slice(0, 30)
+                type: 'empty',
+                data: []
             };
         }
 
@@ -123,13 +112,13 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
             {/* Header / Filtros do Gráfico */}
             <div className="p-5 border-b border-slate-200 bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                 <div>
-                    <h2 className="text-lg font-semibold text-slate-900 tracking-tight">Gráfico por Parcela</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 tracking-tight">Análise por Propriedade e Parcela</h2>
                     <p className="text-xs font-medium text-slate-500">
                         {selectedSocio && selectedPropriedade
                             ? `Exibindo Parcelas da propriedade ${selectedPropriedade} do sócio ${selectedSocio}`
                             : selectedSocio
-                                ? `Exibindo o Top 30 das Propriedades e Parcelas do sócio ${selectedSocio}`
-                                : 'Exibindo o Top 30 Mundial de Entregas Sócio/Propriedade/Parcela'}
+                                ? `Exibindo a distribuição de Parcelas por cada Propriedade do sócio ${selectedSocio}`
+                                : 'A aguardar seleção de um Sócio...'}
                     </p>
                 </div>
 
@@ -157,21 +146,12 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
 
             {/* Gráficos */}
             <div className="p-6">
-                {chartData.type === 'bar' && chartData.data.length > 0 && (
-                    <div className="h-[600px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData.data} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#E5E7EB" />
-                                <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} tick={{ fontSize: 12, fill: '#6B7280' }} />
-                                <YAxis dataKey="name" type="category" width={320} tick={{ fontSize: 11, fill: '#374151', fontWeight: 500 }} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="peso" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={16}>
-                                    {(chartData.data as any[]).map((_entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Bar>
-                            </BarChart>
-                        </ResponsiveContainer>
+                {!selectedSocio && (
+                    <div className="h-64 flex flex-col items-center justify-center text-slate-500 font-medium bg-slate-50/50 rounded-lg border border-slate-100 p-6 text-center">
+                        <span className="text-lg mb-2 block">Por favor, selecione um Sócio no filtro acima.</span>
+                        <span className="text-sm font-normal text-slate-400">
+                            Exemplo: Selecione a "Leopoldina Mari..." para ver 3 gráficos de queijo (um para cada propriedade) com as respetivas parcelas.
+                        </span>
                     </div>
                 )}
 
@@ -210,7 +190,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                     </div>
                 )}
 
-                {chartData.data.length === 0 && (
+                {selectedSocio && chartData.type === 'pieGroup' && chartData.data.length === 0 && (
                     <div className="h-64 flex items-center justify-center text-slate-500 font-medium bg-slate-50/50 rounded-lg border border-slate-100">
                         Nenhum dado encontrado para a seleção atual.
                     </div>
