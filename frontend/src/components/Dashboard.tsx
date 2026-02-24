@@ -91,41 +91,41 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-800 p-6">
+        <div className="min-h-screen bg-slate-50 text-slate-800 p-6 font-sans antialiased selection:bg-wine-100 selection:text-wine-900">
             <div className="max-w-7xl mx-auto space-y-6">
 
                 {/* Header & Filters */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col space-y-6">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col space-y-6">
                     <header className="flex flex-col md:flex-row justify-between items-start md:items-center w-full">
                         <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                            <div className="w-14 h-14 bg-wine-100 rounded-xl flex items-center justify-center text-wine-600">
-                                <Grape size={32} />
+                            <div className="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center text-wine-700 ring-1 ring-wine-100">
+                                <Grape size={26} strokeWidth={2} />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Recepção de Uvas</h1>
-                                <p className="text-gray-500 text-sm">Painel de Controlo e Registos</p>
+                                <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Recepção de Uvas</h1>
+                                <p className="text-slate-500 text-sm font-medium">Painel de Controlo e Registos</p>
                             </div>
                         </div>
 
                         <div className="relative w-full md:w-96">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Search className="h-5 w-5 text-gray-400" />
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <Search className="h-4 w-4 text-slate-400" strokeWidth={2} />
                             </div>
                             <input
                                 type="text"
                                 placeholder="Pesquisar sócio..."
-                                className="pl-10 pr-4 py-2 w-full bg-gray-50 border-gray-200 border rounded-xl focus:ring-2 focus:ring-wine-500 focus:border-wine-500 transition-all outline-none"
+                                className="pl-10 pr-4 py-2 w-full bg-slate-50 border-slate-200 border rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 transition-all outline-none text-sm text-slate-700 placeholder:text-slate-400 font-medium shadow-sm"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
                     </header>
 
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-5 border-t border-slate-100">
                         <div className="flex flex-col">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Campanha</label>
+                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Campanha</label>
                             <select
-                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full p-2.5 outline-none font-medium shadow-sm cursor-pointer"
                                 value={selectedCampanha}
                                 onChange={(e) => setSelectedCampanha(e.target.value)}
                             >
@@ -134,9 +134,9 @@ export default function Dashboard() {
                             </select>
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo</label>
+                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Tipo</label>
                             <select
-                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full p-2.5 outline-none font-medium shadow-sm cursor-pointer"
                                 value={selectedSubFamilia}
                                 onChange={(e) => setSelectedSubFamilia(e.target.value)}
                             >
@@ -145,9 +145,9 @@ export default function Dashboard() {
                             </select>
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Casta</label>
+                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Casta</label>
                             <select
-                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full p-2.5 outline-none font-medium shadow-sm cursor-pointer"
                                 value={selectedCasta}
                                 onChange={(e) => setSelectedCasta(e.target.value)}
                             >
@@ -156,9 +156,9 @@ export default function Dashboard() {
                             </select>
                         </div>
                         <div className="flex flex-col">
-                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Processo Vindima</label>
+                            <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Processo Vindima</label>
                             <select
-                                className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-wine-500 focus:border-wine-500 block w-full p-2.5 outline-none"
+                                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-2 focus:ring-wine-500/20 focus:border-wine-500 block w-full p-2.5 outline-none font-medium shadow-sm cursor-pointer"
                                 value={selectedProcesso}
                                 onChange={(e) => setSelectedProcesso(e.target.value)}
                             >
@@ -170,68 +170,68 @@ export default function Dashboard() {
                 </div>
 
                 {/* KPIs */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-white border-l-4 border-l-wine-500 flex items-center space-x-4">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4">
                         <div className="p-3 bg-wine-50 rounded-lg text-wine-600">
-                            <Calendar className="w-8 h-8" />
+                            <Calendar className="w-6 h-6" strokeWidth={2} />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Entregas</p>
-                            <h3 className="text-3xl font-bold text-gray-900">{filteredData.length}</h3>
+                            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Entregas</p>
+                            <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{filteredData.length}</h3>
                         </div>
                     </div>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-white border-l-4 border-l-emerald-500 flex items-center space-x-4">
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4">
                         <div className="p-3 bg-emerald-50 rounded-lg text-emerald-600">
-                            <TrendingUp className="w-8 h-8" />
+                            <TrendingUp className="w-6 h-6" strokeWidth={2} />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Peso Total (Kg)</p>
-                            <h3 className="text-3xl font-bold text-gray-900">{totalPeso.toLocaleString('pt-PT')}</h3>
+                            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Peso Total (Kg)</p>
+                            <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{totalPeso.toLocaleString('pt-PT')}</h3>
                         </div>
                     </div>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-white border-l-4 border-l-blue-500 flex items-center space-x-4">
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4">
                         <div className="p-3 bg-blue-50 rounded-lg text-blue-600">
-                            <Users className="w-8 h-8" />
+                            <Users className="w-6 h-6" strokeWidth={2} />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Sócios Ativos</p>
-                            <h3 className="text-3xl font-bold text-gray-900">{uniqueSocios}</h3>
+                            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Sócios Ativos</p>
+                            <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{uniqueSocios}</h3>
                         </div>
                     </div>
 
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-white border-l-4 border-l-purple-500 flex items-center space-x-4">
-                        <div className="p-3 bg-purple-50 rounded-lg text-purple-600">
-                            <div className="w-8 h-8 flex items-center justify-center font-bold text-lg">%</div>
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4">
+                        <div className="p-3 bg-purple-50 rounded-lg text-purple-600 flex items-center justify-center">
+                            <span className="font-bold text-xl leading-none">%</span>
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Grau Médio</p>
-                            <h3 className="text-3xl font-bold text-gray-900">{avgGrau.toFixed(2)}</h3>
+                            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Grau Médio</p>
+                            <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{avgGrau.toFixed(2)}</h3>
                         </div>
                     </div>
                 </div>
 
                 {/* Tabs Navigation */}
-                <div className="flex border-b border-gray-200 mt-4 mb-2">
+                <div className="flex border-b border-slate-200 mt-6 mb-2">
                     <button
                         onClick={() => setActiveTab('table')}
-                        className={`flex items-center space-x-2 py-3 px-6 font-medium text-sm transition-colors border-b-2 ${activeTab === 'table'
-                                ? 'border-wine-600 text-wine-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 ${activeTab === 'table'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                             }`}
                     >
-                        <ListFilter className="w-4 h-4" />
+                        <ListFilter className="w-4 h-4" strokeWidth={2.5} />
                         <span>Tabela Detalhada</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('analytics')}
-                        className={`flex items-center space-x-2 py-3 px-6 font-medium text-sm transition-colors border-b-2 ${activeTab === 'analytics'
-                                ? 'border-wine-600 text-wine-600'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 ${activeTab === 'analytics'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                             }`}
                     >
-                        <LayoutDashboard className="w-4 h-4" />
+                        <LayoutDashboard className="w-4 h-4" strokeWidth={2.5} />
                         <span>Análise Gráfica</span>
                     </button>
                 </div>
@@ -240,41 +240,48 @@ export default function Dashboard() {
                 {activeTab === 'analytics' ? (
                     <Analytics data={filteredData} />
                 ) : (
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
-                        <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-                            <h2 className="text-lg font-semibold text-gray-800">Registos Detalhados</h2>
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-4">
+                        <div className="p-5 border-b border-slate-200 bg-white flex justify-between items-center">
+                            <h2 className="text-lg font-semibold text-slate-900">Registos Detalhados</h2>
+                            <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">{filteredData.length} Resultados</span>
                         </div>
-                        <div className="overflow-x-auto max-h-[600px]">
-                            <table className="w-full text-left text-sm whitespace-nowrap">
-                                <thead className="bg-gray-50 text-gray-600 font-medium sticky top-0 z-10 shadow-sm">
+                        <div className="overflow-x-auto max-h-[600px] scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+                            <table className="w-full text-left text-xs whitespace-nowrap">
+                                <thead className="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider text-[10px] sticky top-0 z-10 shadow-sm border-b border-slate-200">
                                     <tr>
-                                        <th className="px-6 py-4">Sócio</th>
-                                        <th className="px-6 py-4">Tipo</th>
-                                        <th className="px-6 py-4">Campanha</th>
-                                        <th className="px-6 py-4">Casta</th>
-                                        <th className="px-6 py-4">Processo</th>
-                                        <th className="px-6 py-4 text-right">Peso (Kg)</th>
-                                        <th className="px-6 py-4 text-right">Grau</th>
+                                        <th className="px-4 py-3">Sócio</th>
+                                        <th className="px-4 py-3">Tipo</th>
+                                        <th className="px-4 py-3">Campanha</th>
+                                        <th className="px-4 py-3">Casta</th>
+                                        <th className="px-4 py-3">Processo</th>
+                                        <th className="px-4 py-3">Propriedade</th>
+                                        <th className="px-4 py-3">Parcela</th>
+                                        <th className="px-4 py-3 text-right">Peso (Kg)</th>
+                                        <th className="px-4 py-3 text-right">Grau</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-100 text-gray-700">
+                                <tbody className="divide-y divide-slate-100 text-slate-700">
                                     {filteredData.slice(0, 100).map((row, idx) => (
-                                        <tr key={idx} className="hover:bg-wine-50/50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="font-medium text-gray-900">{row.CodSocio}</div>
-                                                <div className="text-xs text-gray-500 truncate max-w-[200px]">{row.nome}</div>
+                                        <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                                            <td className="px-4 py-3">
+                                                <div className="font-semibold text-slate-900">{row.CodSocio}</div>
+                                                <div className="text-[10px] text-slate-500 truncate max-w-[150px]">{row.nome}</div>
                                             </td>
-                                            <td className="px-6 py-4">
+                                            <td className="px-4 py-3 font-medium text-slate-600">
                                                 {row.DescricaoSubFamilia || '-'}
                                             </td>
-                                            <td className="px-6 py-4"><span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">{row.Campanha}</span></td>
-                                            <td className="px-6 py-4">
-                                                <div className="font-medium text-wine-800">{row.DescricaoCasta}</div>
+                                            <td className="px-4 py-3">
+                                                <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded-md text-[10px] font-semibold">{row.Campanha}</span>
                                             </td>
-                                            <td className="px-6 py-4">{row.DescricaoProcesso}</td>
-                                            <td className="px-6 py-4 text-right font-medium">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
-                                            <td className="px-6 py-4 text-right">
-                                                <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${(row.Grau || 0) > 13 ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+                                            <td className="px-4 py-3">
+                                                <div className="font-semibold text-wine-800">{row.DescricaoCasta}</div>
+                                            </td>
+                                            <td className="px-4 py-3 font-medium text-slate-600">{row.DescricaoProcesso}</td>
+                                            <td className="px-4 py-3 font-medium text-slate-600">{row.DescricaoPropriedade || '-'}</td>
+                                            <td className="px-4 py-3 font-medium text-slate-600">{row.DescricaoParcela || '-'}</td>
+                                            <td className="px-4 py-3 text-right font-semibold text-slate-900">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
+                                            <td className="px-4 py-3 text-right">
+                                                <span className={`px-2 py-1 rounded-md text-[10px] font-bold border ${(row.Grau || 0) > 13 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-blue-50 text-blue-700 border-blue-100'
                                                     }`}>
                                                     {row.Grau?.toFixed(1) || '0.0'}
                                                 </span>
@@ -284,12 +291,12 @@ export default function Dashboard() {
                                 </tbody>
                             </table>
                             {filteredData.length > 100 && (
-                                <div className="p-4 text-center text-sm text-gray-500 border-t border-gray-100 bg-gray-50/50">
+                                <div className="p-4 text-center text-sm text-slate-500 border-t border-slate-100 bg-slate-50/50">
                                     Mostrando os primeiros 100 registos de {filteredData.length}. Use a pesquisa para refinar.
                                 </div>
                             )}
                             {filteredData.length === 0 && (
-                                <div className="p-8 text-center text-gray-500">
+                                <div className="p-8 text-center text-slate-500 font-medium">
                                     Nenhum registo encontrado.
                                 </div>
                             )}

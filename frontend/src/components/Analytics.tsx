@@ -72,7 +72,7 @@ export default function Analytics({ data }: AnalyticsProps) {
 
     if (data.length === 0) {
         return (
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center text-gray-500">
+            <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-200 text-center text-slate-500 font-medium">
                 Não há dados suficientes para gerar os gráficos.
             </div>
         );
@@ -81,10 +81,10 @@ export default function Analytics({ data }: AnalyticsProps) {
     const CustomTooltip = ({ active, payload, label, unit = 'Kg' }: any) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-white p-3 border border-gray-100 shadow-xl rounded-lg">
-                    <p className="font-semibold text-gray-800">{label}</p>
-                    <p className="text-wine-600 font-medium">
-                        {payload[0].value.toLocaleString('pt-PT')} {unit}
+                <div className="bg-white p-3 border border-slate-200 shadow-md rounded-lg">
+                    <p className="font-semibold text-slate-800 text-sm mb-1">{label}</p>
+                    <p className="text-wine-600 font-bold text-sm">
+                        {payload[0].value.toLocaleString('pt-PT')} <span className="text-slate-500 font-medium text-xs">{unit}</span>
                     </p>
                 </div>
             );
@@ -97,11 +97,11 @@ export default function Analytics({ data }: AnalyticsProps) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 {/* Gráfico de Peso por Casta */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-800 mb-6">Top Castas (Peso Entregue)</h3>
-                    <div className="h-80">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 className="text-base font-semibold text-slate-800 mb-6">Top Castas (Peso Entregue)</h3>
+                    <div className="h-96">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={castaData} margin={{ top: 5, right: 20, left: 20, bottom: 40 }}>
+                            <BarChart data={castaData} margin={{ top: 5, right: 20, left: 20, bottom: 80 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} tick={{ fontSize: 12, fill: '#6B7280' }} />
                                 <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} tick={{ fontSize: 12, fill: '#6B7280' }} />
@@ -113,8 +113,8 @@ export default function Analytics({ data }: AnalyticsProps) {
                 </div>
 
                 {/* Evolução Temporal */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-800 mb-6">Evolução Diária de Entregas</h3>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 className="text-base font-semibold text-slate-800 mb-6">Evolução Diária de Entregas</h3>
                     <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={timeData} margin={{ top: 5, right: 20, left: 20, bottom: 20 }}>
@@ -136,8 +136,8 @@ export default function Analytics({ data }: AnalyticsProps) {
                 </div>
 
                 {/* Top Sócios */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-800 mb-6">Top 5 Sócios (Kg)</h3>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 className="text-base font-semibold text-slate-800 mb-6">Top 5 Sócios (Kg)</h3>
                     <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={topSociosData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
@@ -152,8 +152,8 @@ export default function Analytics({ data }: AnalyticsProps) {
                 </div>
 
                 {/* Processo de Vindima (Donut) */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2 w-full text-left">Distribuição por Processo</h3>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                    <h3 className="text-base font-semibold text-slate-800 mb-2 w-full text-left">Distribuição por Processo</h3>
                     <div className="h-80 w-full flex justify-center">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
