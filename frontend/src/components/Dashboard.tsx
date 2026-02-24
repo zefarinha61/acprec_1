@@ -1,4 +1,3 @@
-```javascript
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { RececaoUva } from '../types';

@@ -13,4 +13,6 @@ export interface RececaoUva {
     Grau: number;
     processovindima: string;
     DescricaoProcesso: string;
+    DescricaoPropriedade?: string;
+    DescricaoParcela?: string;
 }

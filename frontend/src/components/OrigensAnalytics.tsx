@@ -141,7 +141,7 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                         disabled={!effectiveSocio || propriedades.length === 0}
                     >
                         <option value="">Todas as Propriedades</option>
-                        {propriedades.map((p: string) => <option key={p} value={p}>{p}</option>)}
+                        {propriedades.map((p) => <option key={p} value={p}>{p}</option>)}
                     </select>
                 </div>
             </div>
