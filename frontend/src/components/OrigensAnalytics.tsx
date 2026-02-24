@@ -165,15 +165,15 @@ export default function OrigensAnalytics({ data }: OrigensAnalyticsProps) {
                                     {propGroup.propriedade}
                                 </h3>
                                 <p className="text-xs font-medium text-slate-500 mb-4">Total: {propGroup.total.toLocaleString('pt-PT')} Kg</p>
-                                <div className="h-64 w-full">
+                                <div className="h-72 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
+                                        <PieChart margin={{ top: 20, right: 30, left: 30, bottom: 20 }}>
                                             <Pie
                                                 data={propGroup.data}
                                                 cx="50%"
                                                 cy="50%"
                                                 innerRadius={40}
-                                                outerRadius={80}
+                                                outerRadius={70}
                                                 paddingAngle={2}
                                                 dataKey="value"
                                                 label={({ name, percent }) => (percent || 0) > 0.05 ? `${name} ${((percent || 0) * 100).toFixed(0)}%` : ''}
