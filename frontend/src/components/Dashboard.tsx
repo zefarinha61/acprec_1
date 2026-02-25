@@ -5,6 +5,7 @@ import { Search, Grape, Calendar, TrendingUp, Users, Loader2, AlertCircle, Layou
 import Analytics from './Analytics';
 import OrigensAnalytics from './OrigensAnalytics';
 import QualityAnalytics from './QualityAnalytics';
+import YieldAnalytics from './YieldAnalytics';
 
 export default function Dashboard() {
     const [data, setData] = useState<RececaoUva[]>([]);
@@ -19,7 +20,7 @@ export default function Dashboard() {
     const [selectedSubFamilia, setSelectedSubFamilia] = useState('');
 
     // UI State
-    const [activeTab, setActiveTab] = useState<'table' | 'analytics' | 'origens' | 'quality'>('table');
+    const [activeTab, setActiveTab] = useState<'table' | 'analytics' | 'origens' | 'quality' | 'yields'>('table');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -218,47 +219,53 @@ export default function Dashboard() {
                 <div className="flex overflow-x-auto space-x-2 border-b border-slate-200 mt-6 mb-2 scrollbar-none">
                     <button
                         onClick={() => setActiveTab('table')}
-                        className={`flex items - center space - x - 2 py - 3 px - 6 font - semibold text - sm transition - colors border - b - 2 whitespace - nowrap ${
-    activeTab === 'table'
-        ? 'border-wine-600 text-wine-700'
-        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-} `}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'table'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
                     >
                         <ListFilter className="w-4 h-4" strokeWidth={2.5} />
                         <span>Tabela Detalhada</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('analytics')}
-                        className={`flex items - center space - x - 2 py - 3 px - 6 font - semibold text - sm transition - colors border - b - 2 whitespace - nowrap ${
-    activeTab === 'analytics'
-        ? 'border-wine-600 text-wine-700'
-        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-} `}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'analytics'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
                     >
                         <LayoutDashboard className="w-4 h-4" strokeWidth={2.5} />
                         <span>Análise Gráfica</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('origens')}
-                        className={`flex items - center space - x - 2 py - 3 px - 6 font - semibold text - sm transition - colors border - b - 2 whitespace - nowrap ${
-    activeTab === 'origens'
-        ? 'border-wine-600 text-wine-700'
-        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-} `}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'origens'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
                     >
                         <Map className="w-4 h-4" strokeWidth={2.5} />
                         <span>Origens</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('quality')}
-                        className={`flex items - center space - x - 2 py - 3 px - 6 font - semibold text - sm transition - colors border - b - 2 whitespace - nowrap ${
-    activeTab === 'quality'
-        ? 'border-wine-600 text-wine-700'
-        : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-} `}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'quality'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
                     >
                         <BarChart2 className="w-4 h-4" strokeWidth={2.5} />
                         <span>Qualidade vs Rendimento</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('yields')}
+                        className={`flex items-center space-x-2 py-3 px-6 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === 'yields'
+                            ? 'border-wine-600 text-wine-700'
+                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                            }`}
+                    >
+                        <TrendingUp className="w-4 h-4" strokeWidth={2.5} />
+                        <span>Rendimento Real (Kg/ha)</span>
                     </button>
                 </div>
 
@@ -269,6 +276,8 @@ export default function Dashboard() {
                     <OrigensAnalytics data={filteredData} />
                 ) : activeTab === 'quality' ? (
                     <QualityAnalytics data={filteredData} />
+                ) : activeTab === 'yields' ? (
+                    <YieldAnalytics data={filteredData} />
                 ) : (
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-4">
                         <div className="p-5 border-b border-slate-200 bg-white flex justify-between items-center">
@@ -311,7 +320,7 @@ export default function Dashboard() {
                                             <td className="px-4 py-3 font-medium text-slate-600">{row.DescricaoParcela || '-'}</td>
                                             <td className="px-4 py-3 text-right font-semibold text-slate-900">{row.PesoLiquido?.toLocaleString('pt-PT')}</td>
                                             <td className="px-4 py-3 text-right">
-                                                <span className={`px - 2 py - 1 rounded - md text - [10px] font - bold border ${ (row.Grau || 0) > 13 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-blue-50 text-blue-700 border-blue-100' } `}>
+                                                <span className={`px - 2 py - 1 rounded - md text - [10px] font - bold border ${(row.Grau || 0) > 13 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-blue-50 text-blue-700 border-blue-100'} `}>
                                                     {row.Grau?.toFixed(1) || '0.0'}
                                                 </span>
                                             </td>

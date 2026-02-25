@@ -24,7 +24,7 @@ app.get('/api/rececao-uvas', async (req, res) => {
     try {
         await sql.connect(dbConfig);
         const query = `
-            select m.Campanha,m.DataMovimento,m.CodSocio,F.nome,A.Artigo,A.Descricao,SA.SubFamilia,SA.Descricao as DescricaoSubFamilia,A.CDU_Casta,C.Descricao as DescricaoCasta,M.PesoLiquido,M.Grau,m.processovindima,PV.Descricao as DescricaoProcesso,VP.Descricao as DescricaoPropriedade,P.Descricao as DescricaoParcela
+            select m.Campanha,m.DataMovimento,m.CodSocio,F.nome,A.Artigo,A.Descricao,SA.SubFamilia,SA.Descricao as DescricaoSubFamilia,A.CDU_Casta,C.Descricao as DescricaoCasta,M.PesoLiquido,M.Grau,m.processovindima,PV.Descricao as DescricaoProcesso,VP.Descricao as DescricaoPropriedade,P.Descricao as DescricaoParcela,PC_Total.AreaSocioCasta as AreaPlantadaHa
             from VIN_RececaoUvaMovimentos M
             inner join Fornecedores F on F.Fornecedor=M.codsocio
             inner join Artigo A on A.Artigo = M.TipoUva
@@ -36,6 +36,12 @@ app.get('/api/rececao-uvas', async (req, res) => {
             left join VIN_RececaoUvaParcelas RUP on RUP.IDRececaoUvaMovimento = M.IDRececaoUvaMovimento
             left join VIN_Parcelas P on P.CodParcela = RUP.CodParcela and P.CodPropriedade = RUP.CodPropriedade and P.CodSocio = M.CodSocio
             left join VIN_Propriedades VP on VP.CodPropriedade = COALESCE(RUP.CodPropriedade, M.CodPropriedade) and VP.CodSocio = M.CodSocio
+            left join (
+                select CodSocio, CodigoCasta, sum(Area) as AreaSocioCasta
+                from VIN_ParcelasCastas
+                where Anulado = 0
+                group by CodSocio, CodigoCasta
+            ) PC_Total on PC_Total.CodSocio = M.CodSocio and PC_Total.CodigoCasta = A.CDU_Casta
             where M.DataAnulado is null
         `;
         const result = await sql.query(query);

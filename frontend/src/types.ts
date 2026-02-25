@@ -15,4 +15,5 @@ export interface RececaoUva {
     DescricaoProcesso: string;
     DescricaoPropriedade?: string;
     DescricaoParcela?: string;
+    AreaPlantadaHa?: number;
 }
